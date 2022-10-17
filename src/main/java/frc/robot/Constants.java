@@ -102,7 +102,7 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 10;
-            public static final double angleOffset = 138.90; //Possibly the bugged encoder ??? 
+            public static final double angleOffset = 138.90;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
