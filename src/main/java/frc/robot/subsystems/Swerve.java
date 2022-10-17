@@ -63,7 +63,13 @@ public class Swerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
-    }    
+    }  
+    
+    public void resetOnDisable() {
+        for(SwerveModule mod : mSwerveMods) {
+            mod.resetToAbsolute();
+        }
+    }
 
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
