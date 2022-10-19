@@ -13,6 +13,9 @@ public final class Constants {
 
     public static final class Swerve {
         public static final int pigeonID = 0;
+
+        public static final int CandleID = 0;
+
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
