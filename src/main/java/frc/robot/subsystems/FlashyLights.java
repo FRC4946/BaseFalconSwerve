@@ -15,18 +15,20 @@ public class FlashyLights {
         config.stripType = LEDStripType.RGB; // set the strip type to RGB
         config.brightnessScalar = 1; // dim the LEDs to half brightness
         lights.configAllSettings(config);
-        lights.setLEDs(255,255,255);
+        lights.setLEDs(0,255,0);
     }
 
     public void setLights(int r, int g, int b) {
         lights.setLEDs(r, g, b);
     }
 
-    public void randomLights() {
-        int num1 = (int)((Math.random() * (255 - 0 + 1) + 0));
-        int num2 = (int)((Math.random() * (255 - 0 + 1) + 0));
-        int num3 = (int)((Math.random() * (255 - 0 + 1) + 0));
+    // public void randomLights() {
 
-        lights.setLEDs(num1, num2, num3);
-    }
+    //     int num1 = (int)((Math.random() * (255 - 0 + 1) + 0));
+    //     int num2 = (int)((Math.random() * (255 - 0 + 1) + 0));
+    //     int num3 = (int)((Math.random() * (255 - 0 + 1) + 0));
+
+    //     lights.setLEDs(num1, num2, num3);
+        
+    // }
 }
