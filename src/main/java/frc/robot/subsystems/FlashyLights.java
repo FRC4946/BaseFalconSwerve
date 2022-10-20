@@ -22,13 +22,13 @@ public class FlashyLights {
         lights.setLEDs(r, g, b);
     }
 
-    // public void randomLights() {
+    public void randomLights() {
 
-    //     int num1 = (int)((Math.random() * (255 - 0 + 1) + 0));
-    //     int num2 = (int)((Math.random() * (255 - 0 + 1) + 0));
-    //     int num3 = (int)((Math.random() * (255 - 0 + 1) + 0));
+        int num1 = (int)((Math.random() * (255 - 0 + 1) + 0));
+        int num2 = (int)((Math.random() * (255 - 0 + 1) + 0));
+        int num3 = (int)((Math.random() * (255 - 0 + 1) + 0));
 
-    //     lights.setLEDs(num1, num2, num3);
+        lights.setLEDs(num1, num2, num3);
         
-    // }
+    }
 }
