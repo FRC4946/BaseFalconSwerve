@@ -33,6 +33,7 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
   private final JoystickButton randomLight = new JoystickButton(driver, XboxController.Button.kA.value);
+  private final JoystickButton cycleAnimation = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   public final FlashyLights leds = new FlashyLights();
@@ -59,6 +60,7 @@ public class RobotContainer {
     /* Driver Buttons */
     zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
     randomLight.whenPressed(new InstantCommand(() -> leds.randomLights()));
+    cycleAnimation.whenPressed(new InstantCommand(() -> leds.cycleAnimation()));
   }
 
   /**
