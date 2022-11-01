@@ -60,7 +60,7 @@ public class RobotContainer {
     /* Driver Buttons */
     zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
     randomLight.whenPressed(new InstantCommand(() -> leds.randomLights()));
-    cycleAnimation.whenPressed(new InstantCommand(() -> leds.cycleAnimation()));
+    cycleAnimation.whenPressed(new InstantCommand(() -> s_Swerve.resetToAbsolute()));
   }
 
   /**

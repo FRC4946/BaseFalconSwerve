@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
@@ -59,9 +59,20 @@ public class SwerveModule {
         lastAngle = angle;
     }
 
-    private void resetToAbsolute(){
+    public void resetToAbsolute(){
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
+        // System.out.println("Module: " + moduleNumber + ", Angle in Falcon Ticks: " + absolutePosition);
+        System.out.println("Module: " + moduleNumber + ", Angle from CANCoder: " + (getCanCoder().getDegrees() - angleOffset));
+        System.out.println("Module: " + moduleNumber + ", Angle in Degrees: " + Conversions.falconToDegrees(absolutePosition, Constants.Swerve.angleGearRatio));
+
+        SmartDashboard.putNumber("abs position" + moduleNumber, absolutePosition);
+        SmartDashboard.putNumber("" + moduleNumber, Conversions.degreesToFalcon(angleOffset, Constants.Swerve.angleGearRatio));
+        // mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angleOffset, Constants.Swerve.angleGearRatio));
+    }
+
+    public void straightenWheel() {
+        mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angleOffset, Constants.Swerve.angleGearRatio));
     }
 
     private void configAngleEncoder(){        
