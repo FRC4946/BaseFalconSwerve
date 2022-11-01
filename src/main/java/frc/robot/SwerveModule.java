@@ -62,7 +62,6 @@ public class SwerveModule {
     public void resetToAbsolute(){
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
-        // System.out.println("Module: " + moduleNumber + ", Angle in Falcon Ticks: " + absolutePosition);
         System.out.println("Module: " + moduleNumber + ", Angle from CANCoder: " + (getCanCoder().getDegrees() - angleOffset));
         System.out.println("Module: " + moduleNumber + ", Angle in Degrees: " + Conversions.falconToDegrees(absolutePosition, Constants.Swerve.angleGearRatio));
 
@@ -72,7 +71,7 @@ public class SwerveModule {
     }
 
     public void straightenWheel() {
-        mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angleOffset, Constants.Swerve.angleGearRatio));
+        mAngleMotor.set(ControlMode.Position, 0);
     }
 
     private void configAngleEncoder(){        
@@ -85,6 +84,7 @@ public class SwerveModule {
         mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         mAngleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
+        System.out.println("Calling resetToAbsolute from configAngleMotor on module: " + moduleNumber);
         resetToAbsolute();
     }
 

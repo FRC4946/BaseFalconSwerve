@@ -64,6 +64,7 @@ public class Swerve extends SubsystemBase {
 
     public void resetToAbsolute() {
         for (SwerveModule mod : mSwerveMods) {
+            System.out.println("Calling resetToAbsolute from button on module: " + mod.moduleNumber);
             mod.resetToAbsolute();
         }
     }
