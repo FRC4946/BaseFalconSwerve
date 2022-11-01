@@ -56,7 +56,7 @@ public class Swerve extends SubsystemBase {
         }
     }    
 
-    public void turnturnplz() {
+    public void straightenWheels() {
         for(SwerveModule mod : mSwerveMods) {
             mod.straightenWheel();
         }
