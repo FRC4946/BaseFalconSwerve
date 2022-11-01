@@ -54,19 +54,6 @@ public class Swerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
-    }    
-
-    public void straightenWheels() {
-        for(SwerveModule mod : mSwerveMods) {
-            mod.straightenWheel();
-        }
-    }
-
-    public void resetToAbsolute() {
-        for (SwerveModule mod : mSwerveMods) {
-            System.out.println("Calling resetToAbsolute from button on module: " + mod.moduleNumber);
-            mod.resetToAbsolute();
-        }
     }
 
     /* Used by SwerveControllerCommand in Auto */
