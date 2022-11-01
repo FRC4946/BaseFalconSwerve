@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.autos.*;
@@ -62,7 +63,7 @@ public class RobotContainer {
     zeroGyro.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
     randomLight.whenPressed(new InstantCommand(() -> leds.randomLights()));
     cycleAnimation.whenPressed(new InstantCommand(() -> s_Swerve.resetToAbsolute()));
-    straightenWheels.whenPressed(new InstantCommand(() -> s_Swerve.straightenWheels()));
+    straightenWheels.whenHeld(new RunCommand(() -> s_Swerve.straightenWheels()));
   }
 
   /**

@@ -71,7 +71,8 @@ public class SwerveModule {
     }
 
     public void straightenWheel() {
-        mAngleMotor.set(ControlMode.Position, 0);
+        // mAngleMotor.set(ControlMode.Position, 0);
+        setDesiredState(new SwerveModuleState(2.0, Rotation2d.fromDegrees(0)), true);
     }
 
     private void configAngleEncoder(){        
