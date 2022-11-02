@@ -56,8 +56,6 @@ public class SwerveModule {
 
         double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle.getDegrees(); //Prevent rotating module if speed is less then 1%. Prevents Jittering.
         mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle, Constants.Swerve.angleGearRatio)); 
-        SmartDashboard.putNumber(moduleNumber + "current angle", angle);
-        SmartDashboard.putNumber(moduleNumber + "last angle", lastAngle);
         lastAngle = angle;
     }
 
