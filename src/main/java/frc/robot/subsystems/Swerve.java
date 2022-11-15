@@ -8,10 +8,13 @@ import frc.robot.Constants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -19,8 +22,13 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public PigeonIMU gyro;
+    public PIDController turnPID;
 
     public Swerve() {
+        turnPID = new PIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD);
+        turnPID.setTolerance(1.5);
+        turnPID.enableContinuousInput(0, 360);
+
         gyro = new PigeonIMU(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
@@ -91,6 +99,33 @@ public class Swerve extends SubsystemBase {
         gyro.getYawPitchRoll(ypr);
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
     }
+
+    public double getAbsoluteYaw() {
+        return Math.abs(getYaw().getDegrees() % 360);
+    }
+
+    public double setYaw(Joystick controller) {
+        double xAxis = controller.getRawAxis(XboxController.Axis.kRightX.value) < 0.2 && controller.getRawAxis(XboxController.Axis.kRightX.value) > -0.2 ? 0 : controller.getRawAxis(XboxController.Axis.kRightX.value);
+        double yAxis = controller.getRawAxis(XboxController.Axis.kRightY.value) < 0.2 && controller.getRawAxis(XboxController.Axis.kRightY.value) > -0.2 ? 0 : -controller.getRawAxis(XboxController.Axis.kRightY.value);
+
+        SmartDashboard.putNumber("X ", xAxis);
+        SmartDashboard.putNumber("Y ", yAxis);
+
+        double desiredAngle = Math.toDegrees(Math.atan2(xAxis, yAxis)); //set desired angle to tan of x and -y
+        SmartDashboard.putNumber("check desiredAngle ", desiredAngle);
+
+        desiredAngle = desiredAngle == desiredAngle ? desiredAngle : 0; // If desiredAngle is NaN set to 0
+
+        desiredAngle = desiredAngle >= 0 ? desiredAngle : desiredAngle + 360; //Convert -180 to 180 to 0 to 360
+
+        SmartDashboard.putNumber("desiredAngle ", desiredAngle);
+        SmartDashboard.putNumber("currentAngle ", getAbsoluteYaw());
+        double speed = Math.min(turnPID.calculate(getAbsoluteYaw(), desiredAngle), Constants.Swerve.maxAngularVelocity);
+
+        SmartDashboard.putNumber("Turn speed ", speed);
+
+        return speed;
+    }  
 
     @Override
     public void periodic(){

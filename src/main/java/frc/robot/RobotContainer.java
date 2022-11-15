@@ -29,8 +29,9 @@ public class RobotContainer {
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
   private final int strafeAxis = XboxController.Axis.kLeftX.value;
-  private final int rotationAxis = XboxController.Axis.kRightX.value;
-
+  private final int rotationAxisX = XboxController.Axis.kRightX.value;
+  private final int rotationAxisY = XboxController.Axis.kRightY.value;
+  
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
   private final JoystickButton randomLight = new JoystickButton(driver, XboxController.Button.kA.value);
@@ -45,7 +46,7 @@ public class RobotContainer {
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxisX, rotationAxisY, fieldRelative, openLoop));
     leds.configLights();    
 
     // Configure the button bindings
