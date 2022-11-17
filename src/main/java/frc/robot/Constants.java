@@ -55,8 +55,8 @@ public final class Constants {
 
         /* Drive Motor PID Values */
         public static final double driveKP = 0.10;
-        public static final double driveKI = 0.0;
-        public static final double driveKD = 0.0;
+        public static final double driveKI = 0.10;
+        public static final double driveKD = 0.01;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values */
@@ -83,7 +83,7 @@ public final class Constants {
         public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
 
         /* Motor Inverts */
-        public static final boolean driveMotorInvert = false;
+        public static final boolean driveMotorInvert = true;
         public static final boolean angleMotorInvert = true;
 
         /* Angle Encoder Invert */
