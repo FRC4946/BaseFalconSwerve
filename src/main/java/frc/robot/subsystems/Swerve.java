@@ -26,7 +26,6 @@ public class Swerve extends SubsystemBase {
 
     public Swerve() {
         turnPID = new PIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD);
-        turnPID.setTolerance(1.5);
         turnPID.enableContinuousInput(0, 360);
 
         gyro = new PigeonIMU(Constants.Swerve.pigeonID);
@@ -101,12 +100,14 @@ public class Swerve extends SubsystemBase {
     }
 
     public double getAbsoluteYaw() {
-        return Math.abs(getYaw().getDegrees() % 360);
+        return getYaw().getDegrees() < 0 
+        ? getYaw().getDegrees() % 360 + 360
+        : getYaw().getDegrees() % 360;
     }
 
     public double setYaw(Joystick controller) {
-        double xAxis = controller.getRawAxis(XboxController.Axis.kRightX.value) < 0.2 && controller.getRawAxis(XboxController.Axis.kRightX.value) > -0.2 ? 0 : controller.getRawAxis(XboxController.Axis.kRightX.value);
-        double yAxis = controller.getRawAxis(XboxController.Axis.kRightY.value) < 0.2 && controller.getRawAxis(XboxController.Axis.kRightY.value) > -0.2 ? 0 : -controller.getRawAxis(XboxController.Axis.kRightY.value);
+        double xAxis = controller.getRawAxis(XboxController.Axis.kRightX.value) < 0.1 && controller.getRawAxis(XboxController.Axis.kRightX.value) > -0.1 ? 0 : -controller.getRawAxis(XboxController.Axis.kRightX.value);
+        double yAxis = controller.getRawAxis(XboxController.Axis.kRightY.value) < 0.1 && controller.getRawAxis(XboxController.Axis.kRightY.value) > -0.1 ? 0 : -controller.getRawAxis(XboxController.Axis.kRightY.value);
 
         SmartDashboard.putNumber("X ", xAxis);
         SmartDashboard.putNumber("Y ", yAxis);
@@ -123,7 +124,7 @@ public class Swerve extends SubsystemBase {
 
         SmartDashboard.putNumber("Turn speed ", speed);
         
-        return turnPID.atSetpoint() ? 0 : speed;
+        return -speed;
     }  
 
     @Override
