@@ -112,7 +112,6 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Y ", yAxis);
 
         double desiredAngle = Math.toDegrees(Math.atan2(xAxis, yAxis)); //set desired angle to tan of x and -y
-        SmartDashboard.putNumber("check desiredAngle ", desiredAngle);
 
         desiredAngle = desiredAngle == desiredAngle ? desiredAngle : 0; // If desiredAngle is NaN set to 0
 
@@ -120,17 +119,20 @@ public class Swerve extends SubsystemBase {
 
         SmartDashboard.putNumber("desiredAngle ", desiredAngle);
         SmartDashboard.putNumber("currentAngle ", getAbsoluteYaw());
-        double speed = Math.min(turnPID.calculate(getAbsoluteYaw(), desiredAngle), Constants.Swerve.maxAngularVelocity);
+        double speed = Math.max(Math.min(turnPID.calculate(getAbsoluteYaw(), desiredAngle), Constants.Swerve.maxAngularVelocity), -Constants.Swerve.maxAngularVelocity);
 
         SmartDashboard.putNumber("Turn speed ", speed);
-
-        return speed;
+        
+        return turnPID.atSetpoint() ? 0 : speed;
     }  
 
     @Override
     public void periodic(){
         swerveOdometry.update(getYaw(), getStates());  
         SmartDashboard.putNumber("Yaw: ", getYaw().getDegrees());
+        SmartDashboard.putData(turnPID);
+        SmartDashboard.putBoolean("at setpoint", turnPID.atSetpoint());
+        SmartDashboard.putNumber("Setpoint", turnPID.getSetpoint());
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
