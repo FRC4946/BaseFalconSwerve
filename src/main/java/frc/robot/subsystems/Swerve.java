@@ -122,7 +122,10 @@ public class Swerve extends SubsystemBase {
 
         SmartDashboard.putNumber("Turn speed ", speed);
         
-        return turnPID.atSetpoint() ? 0.0 : speed;
+        double ringDistance = Math.abs(xAxis) + Math.abs(yAxis);
+
+        //return 0;
+        return ringDistance >= 0.85 ? speed : 0;
     }  
 
     @Override
