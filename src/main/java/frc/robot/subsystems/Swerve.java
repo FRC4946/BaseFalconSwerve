@@ -122,7 +122,7 @@ public class Swerve extends SubsystemBase {
 
         SmartDashboard.putNumber("Turn speed ", speed);
         
-        double ringDistance = Math.abs(xAxis) + Math.abs(yAxis);
+        double ringDistance = Math.pow(xAxis, 2) + Math.pow(yAxis, 2);
 
         //return 0;
         return ringDistance >= 0.85 ? speed : 0;
