@@ -9,6 +9,14 @@ import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+
+    public static final class Vision {
+        public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(24);
+        public static final double TARGET_HEIGHT_METERS = Units.feetToMeters(5);
+        // Angle between horizontal and the camera.
+        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+    }
+
     public static final double stickDeadband = 0.1;
 
     public static final class Swerve {
