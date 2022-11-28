@@ -2,12 +2,16 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,12 +24,20 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public PigeonIMU gyro;
 
+    public PhotonCamera camera;
+    public PIDController turnController;
+
     public Swerve() {
         gyro = new PigeonIMU(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
         
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw());
+
+        camera = new PhotonCamera("photonvision");
+
+        turnController = new PIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD);
+        turnController.setTolerance(1);
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -54,6 +66,20 @@ public class Swerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
+    }
+
+    public double getVisionAngle() {
+        PhotonPipelineResult result = camera.getLatestResult();
+
+        if (result.hasTargets()) {
+            return result.getBestTarget().getYaw();
+        } else {
+            return 0;
+        }
+    }
+
+    public double setVisionAngle() {
+        return turnController.calculate(getVisionAngle(), 0);
     }
 
     /* Used by SwerveControllerCommand in Auto */
