@@ -38,6 +38,7 @@ public class RobotContainer {
   private final JoystickButton straightenWheels = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
+  private final Apriltag s_Vision = new Apriltag();
   public final FlashyLights leds = new FlashyLights();
 
 
@@ -45,7 +46,8 @@ public class RobotContainer {
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(new TeleopSwerveWithVision(s_Swerve, s_Vision, driver, translationAxis, strafeAxis, fieldRelative, openLoop));
+    //s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     leds.configLights();    
 
     // Configure the button bindings
