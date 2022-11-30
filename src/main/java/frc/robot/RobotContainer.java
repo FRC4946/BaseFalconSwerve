@@ -35,7 +35,7 @@ public class RobotContainer {
   private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
   private final JoystickButton randomLight = new JoystickButton(driver, XboxController.Button.kA.value);
   private final JoystickButton cycleAnimation = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-
+  private final JoystickButton straightenWheels = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   public final FlashyLights leds = new FlashyLights();
@@ -45,7 +45,7 @@ public class RobotContainer {
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop, driver.getRawButton(1)));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     leds.configLights();    
 
     // Configure the button bindings
