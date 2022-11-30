@@ -6,12 +6,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Apriltag extends SubsystemBase {
+public class Vision extends SubsystemBase {
 
     PhotonCamera camera;
     PhotonPipelineResult result;
 
-    public Apriltag() {
+    public Vision() {
 
         camera = new PhotonCamera("photonvision"); //TODO: get camera name
 
