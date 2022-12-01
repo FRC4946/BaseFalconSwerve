@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Apriltag;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,7 +17,7 @@ public class TeleopSwerveWithVision extends CommandBase {
     private boolean openLoop;
 
     private Swerve s_Swerve;
-    private Apriltag s_Vision;
+    private Vision s_Vision;
 
     private PIDController m_pid;
 
@@ -28,7 +28,7 @@ public class TeleopSwerveWithVision extends CommandBase {
     /**
      * Driver control
      */
-    public TeleopSwerveWithVision(Swerve s_Swerve, Apriltag s_Vision, Joystick controller, int translationAxis,
+    public TeleopSwerveWithVision(Swerve s_Swerve, Vision s_Vision, Joystick controller, int translationAxis,
             int strafeAxis, boolean fieldRelative, boolean openLoop) {
         this.s_Swerve = s_Swerve;
         this.s_Vision = s_Vision;

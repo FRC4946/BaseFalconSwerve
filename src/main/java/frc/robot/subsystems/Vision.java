@@ -13,7 +13,7 @@ public class Vision extends SubsystemBase {
 
     public Vision() {
 
-        camera = new PhotonCamera("photonvision"); //TODO: get camera name
+        camera = new PhotonCamera("Microsoft_LifeCam_HD-3000"); //TODO: get camera name
 
 
     }

@@ -38,7 +38,7 @@ public class RobotContainer {
   private final JoystickButton straightenWheels = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final Apriltag s_Vision = new Apriltag();
+  private final Vision s_Vision = new Vision();
   public final FlashyLights leds = new FlashyLights();
 
 
