@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -19,11 +20,12 @@ public class Vision extends SubsystemBase{
 
   //TODO: get these, also should prolly place into constants
   //also heights in meters
-  private double cameraHeight = 0;
-  private double targetHeight = 0;
-  private double cameraPitch = 0;
+  private double cameraHeight = 10;
+  private double targetHeight = 10;
+  private double cameraPitch = 0.1;
 
   private int targetTagId = 5;
+  private boolean tagFound = false;
 
   private PhotonTrackedTarget target;
   private List<PhotonTrackedTarget> targets;
@@ -32,6 +34,12 @@ public class Vision extends SubsystemBase{
     camera = new PhotonCamera("Microsoft_LifeCam_HD-3000"); //TODO: get this
     result = camera.getLatestResult();
     targets = result.getTargets();
+    if (result.hasTargets()) {
+      target = targets.get(targets.indexOf(targetTagId));
+      tagFound = true;
+    } else {
+      tagFound = false;
+    }
   }
 
   public void setTargetTag(int target) {
@@ -41,11 +49,11 @@ public class Vision extends SubsystemBase{
   public void update() {
     result = camera.getLatestResult();
     targets = result.getTargets();
-    if (targets.contains(targetTagId)) {
+    if (result.hasTargets()) {
       target = targets.get(targets.indexOf(targetTagId));
-    }
+    } 
   }
-
+/*
   public double getDistToTarget() {
     return PhotonUtils.calculateDistanceToTargetMeters(cameraHeight, targetHeight, cameraPitch, Units.degreesToRadians(target.getPitch()));
   }
@@ -54,24 +62,44 @@ public class Vision extends SubsystemBase{
    * 
    * @return
    */
+  /*
   public Translation2d getTranslationToTarget() {
     return PhotonUtils.estimateCameraToTargetTranslation(getDistToTarget(), Rotation2d.fromDegrees(target.getYaw()));
   }
+  */
 
-  public boolean hasTarget() {
-    return targets.contains(targetTagId);
+  /**
+   * Gets if the latest result has any target(s).
+   * @apiNote Call this everytime when getting target data, 
+   * otherwise will give a null pointer execption.
+   * @return True if the pipeline has a target
+   */
+  public boolean hasTarget(@Nullable int targetID)) {
+    if 
   }
 
   public double getOffsetZ() {
-    return target.getBestCameraToTarget().getZ();
+    if (hasTarget()) {
+      return target.getBestCameraToTarget().getZ();
+    } else {
+      return 69420.0;
+    }
   }
 
   public double getOffsetY() {
-    return target.getBestCameraToTarget().getY();
+    if (hasTarget()) {
+      return target.getBestCameraToTarget().getY();
+    } else {
+      return 69420.0;
+    }
   }
 
   public double getOffsetX() {
-    return target.getBestCameraToTarget().getX();
+    if (hasTarget()) {
+      return target.getBestCameraToTarget().getX();
+    } else {
+      return 69420.0;
+    }
   }
 
   public void setCameraFilter(boolean on) {
@@ -84,8 +112,6 @@ public class Vision extends SubsystemBase{
 
   @Override
   public void periodic() {
-    update();
-    SmartDashboard.putNumber("distance to target", getDistToTarget());
     SmartDashboard.putBoolean("has target?", hasTarget());
     SmartDashboard.putNumber("tag id", targetTagId);
     SmartDashboard.putNumber("x offset", getOffsetX());
@@ -96,5 +122,6 @@ public class Vision extends SubsystemBase{
       tagsSen[i] = (double) targets.get(i).getFiducialId();
     }
     SmartDashboard.putNumberArray("current tags", tagsSen);
-  }
+    update();
+    }
 }
