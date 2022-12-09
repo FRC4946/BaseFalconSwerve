@@ -60,7 +60,7 @@ public class TeleopSwerveWithVision extends CommandBase {
 
         translation = new Translation2d(yAxis, xAxis).times(Constants.Swerve.maxSpeed);
 
-        if (s_Vision.hasTarget()) {
+        if (s_Vision.hasTarget(Constants.Vision.targetTagId)) {
             rotation = m_pid.calculate(-s_Vision.getOffsetX(), 0);
             s_Swerve.drive(translation, rotation, fieldRelative, openLoop);
 

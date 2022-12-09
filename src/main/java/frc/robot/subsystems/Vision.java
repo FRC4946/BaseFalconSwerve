@@ -13,18 +13,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Vision extends SubsystemBase{
   private final PhotonCamera camera;
   private PhotonPipelineResult result;
-
-  //TODO: get these, also should prolly place into constants
-  //also heights in meters
-  private double cameraHeight = 10;
-  private double targetHeight = 10;
-  private double cameraPitch = 0.1;
-
-  private int targetTagId = 5;
+  
+  private int targetTagID;
   private boolean tagFound = false;
 
   private PhotonTrackedTarget target;
@@ -34,8 +29,11 @@ public class Vision extends SubsystemBase{
     camera = new PhotonCamera("Microsoft_LifeCam_HD-3000"); //TODO: get this
     result = camera.getLatestResult();
     targets = result.getTargets();
+
+    targetTagID = Constants.Vision.targetTagId;
+
     if (result.hasTargets()) {
-      target = targets.get(targets.indexOf(targetTagId));
+      target = targets.get(targets.indexOf(targetTagID));
       tagFound = true;
     } else {
       tagFound = false;
@@ -43,14 +41,14 @@ public class Vision extends SubsystemBase{
   }
 
   public void setTargetTag(int target) {
-    targetTagId = target;
+    targetTagID = target;
   }
 
   public void update() {
     result = camera.getLatestResult();
     targets = result.getTargets();
     if (result.hasTargets()) {
-      target = targets.get(targets.indexOf(targetTagId));
+      target = targets.get(targets.indexOf(targetTagID));
     } 
   }
 /*
@@ -74,12 +72,13 @@ public class Vision extends SubsystemBase{
    * otherwise will give a null pointer execption.
    * @return True if the pipeline has a target
    */
-  public boolean hasTarget(@Nullable int targetID)) {
-    if 
+  public boolean hasTarget(int targetID) {
+    //System.out.println(result.hasTargets()) ;
+    return result.hasTargets();
   }
 
   public double getOffsetZ() {
-    if (hasTarget()) {
+    if (hasTarget(targetTagID)) {
       return target.getBestCameraToTarget().getZ();
     } else {
       return 69420.0;
@@ -87,7 +86,7 @@ public class Vision extends SubsystemBase{
   }
 
   public double getOffsetY() {
-    if (hasTarget()) {
+    if (hasTarget(targetTagID)) {
       return target.getBestCameraToTarget().getY();
     } else {
       return 69420.0;
@@ -95,7 +94,7 @@ public class Vision extends SubsystemBase{
   }
 
   public double getOffsetX() {
-    if (hasTarget()) {
+    if (hasTarget(targetTagID)) {
       return target.getBestCameraToTarget().getX();
     } else {
       return 69420.0;
@@ -112,8 +111,8 @@ public class Vision extends SubsystemBase{
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("has target?", hasTarget());
-    SmartDashboard.putNumber("tag id", targetTagId);
+    SmartDashboard.putBoolean("has target?", hasTarget(targetTagID));
+    SmartDashboard.putNumber("tag id", targetTagID);
     SmartDashboard.putNumber("x offset", getOffsetX());
     SmartDashboard.putNumber("y offset", getOffsetY());
     SmartDashboard.putNumber("z offset", getOffsetZ());

@@ -48,7 +48,7 @@ public class FlashyLights {
                 lights.animate(rainbowAnimation);
             } else {
                 lights.setLEDs(0, 0, 255);
-                System.out.println(animation);
+                //System.out.println(animation);
             }
         }
     }
