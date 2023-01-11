@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import frc.robot.SwerveModule;
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public PigeonIMU gyro;
+    public Pigeon2 gyro;
     public PIDController turnPID;
 
     public Swerve() {
@@ -29,7 +30,7 @@ public class Swerve extends SubsystemBase {
         turnPID.setTolerance(2);
         turnPID.enableContinuousInput(0, 360);
 
-        gyro = new PigeonIMU(Constants.Swerve.pigeonID);
+        gyro = new Pigeon2(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
         
@@ -107,8 +108,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public double setYaw(double xAxis, double yAxis) {
-        SmartDashboard.putNumber("X ", xAxis);
-        SmartDashboard.putNumber("Y ", yAxis);
 
         double desiredAngle = Math.toDegrees(Math.atan2(xAxis, yAxis)); //set desired angle to tan of x and -y
 
@@ -128,10 +127,27 @@ public class Swerve extends SubsystemBase {
         return ringDistance >= 0.85 ? speed : 0;
     }  
 
+    public double getLean() {
+        double[] grav = new double[3];
+        gyro.getGravityVector(grav);
+        
+        double length = Math.sqrt(grav[0] * grav[0] + grav[1] * grav[1] + grav[2] * grav[2]);
+
+        return Math.acos(grav[2] / length);
+    }
+
     @Override
     public void periodic(){
+        double [] grav = new double[3];
+        gyro.getGravityVector(grav);
         swerveOdometry.update(getYaw(), getStates());  
         SmartDashboard.putNumber("Yaw: ", getYaw().getDegrees());
+
+        SmartDashboard.getNumber("lean", grav[2] / Math.sqrt(grav[0] * grav[0] + grav[1] * grav[1] + grav[2] * grav[2]));
+        SmartDashboard.putNumber("x", grav[0]);
+        SmartDashboard.putNumber("y", grav[1]);
+        SmartDashboard.putNumber("z", grav[2]);
+
         SmartDashboard.putData(turnPID);
         SmartDashboard.putBoolean("at setpoint", turnPID.atSetpoint());
         SmartDashboard.putNumber("Setpoint", turnPID.getSetpoint());
