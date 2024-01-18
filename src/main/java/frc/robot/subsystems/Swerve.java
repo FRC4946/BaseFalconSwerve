@@ -24,7 +24,7 @@ public class Swerve extends SubsystemBase {
     public Pigeon2 gyro;
 
     public Swerve() {
-        gyro = new Pigeon2(Constants.Swerve.pigeonID);
+        gyro = new Pigeon2(Constants.Swerve.pigeonID, Constants.Swerve.CAN_STRING);
         gyro.getConfigurator().apply(new Pigeon2Configuration());
         zeroGyro();
 
@@ -115,5 +115,7 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
+
+        SmartDashboard.putNumber("Yaw", getYaw().getDegrees());
     }
 }
